@@ -1,5 +1,23 @@
 @url = http://localhost:3000/api/payroll
 
 ###
-GET {{url}}?page=1&size=10
+GET {{url}}?page=2&size=10
 Content-Type: application/json
+
+###
+GET {{url}}/show/18444814
+Content-Type: application/json
+
+###
+POST {{url}}/store
+Content-Type: application/json
+
+{
+  "typePayroll": 10,
+  "regionId": 2,
+  "municipalityId": 2,
+  "documentNumber": 18444814,
+  "fullName": "JOISE GARCIA",
+  "birthday": "1986-07-25",
+  "age": 35
+}
