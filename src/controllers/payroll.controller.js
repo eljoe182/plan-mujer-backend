@@ -4,7 +4,7 @@ import MunicipalityModel from "../models/municipality.model.js";
 import RegionModel from "../models/region.model.js";
 
 export const index = async (req, res) => {
-  const { page, size } = req.query;
+  const { page = 1, size = 10 } = req.query;
   const payrollModel = await PayrollModel.findAll({
     attributes: ["id", "cedula", "Nom_titular", "fecha_nacimiento", "edad"],
     include: [
@@ -31,8 +31,8 @@ export const index = async (req, res) => {
   const rowsCount = await PayrollModel.count();
 
   res.status(200).json({
-    page,
-    size,
+    page: Number(page),
+    size: Number(size),
     rowsCount,
     rows: payrollModel,
   });
@@ -69,33 +69,68 @@ export const show = async (req, res) => {
   });
 };
 
+export const create = async (req, res) => {
+  const typePayrollModel = await TypePayrollModel.findAll({
+    attributes: ["id", "descripcion"],
+    order: [["descripcion", "ASC"]],
+  });
+  const municipalityModel = await MunicipalityModel.findAll({
+    attributes: ["id", "descripcion"],
+    include: [
+      {
+        model: RegionModel,
+        key: "id",
+        attributes: ["id", "descripcion"],
+      },
+    ],
+    order: [["descripcion", "ASC"]],
+  });
+
+  res.status(200).json({
+    typePayroll: typePayrollModel,
+    municipality: municipalityModel,
+  });
+};
+
 export const store = async (req, res) => {
   try {
     const {
-      typePayroll,
-      regionId,
-      municipalityId,
-      documentNumber,
       fullName,
-      birthday,
+      documentNumber,
+      birthDate,
       age,
-    } = req.body;
-    const payrollModel = await PayrollModel.create({
       typePayroll,
-      regionId,
-      municipalityId,
+      municipality,
+      region,
+    } = req.body;
+
+    const payrollModel = await PayrollModel.create({
+      typePayroll: typePayroll.id,
+      regionId: region.id,
+      municipalityId: municipality.id,
       documentNumber,
-      fullName,
-      birthday,
+      fullName: fullName.toUpperCase(),
+      birthday: birthDate,
       age,
     });
 
-    res.status(201).json({
-      rows: payrollModel,
-    });
+    res.status(201).json(payrollModel);
   } catch (error) {
     res.status(500).json({
       message: error.message,
     });
   }
+};
+
+export const destroy = async (req, res) => {
+  const { id } = req.params;
+  const payrollModel = await PayrollModel.destroy({
+    where: {
+      cedula: id,
+    },
+  });
+
+  res.status(200).json({
+    rows: payrollModel,
+  });
 };

@@ -9,6 +9,10 @@ GET {{url}}/show/18444814
 Content-Type: application/json
 
 ###
+GET {{url}}/create
+Content-Type: application/json
+
+###
 POST {{url}}/store
 Content-Type: application/json
 
@@ -21,3 +25,7 @@ Content-Type: application/json
   "birthday": "1986-07-25",
   "age": 35
 }
+
+###
+DELETE {{url}}/destroy/18444814
+Content-Type: application/json
