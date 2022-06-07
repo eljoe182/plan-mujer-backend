@@ -1,0 +1,15 @@
+@url = http://localhost:3000/api/citas
+
+###
+GET {{url}}
+Content-Type: application/json
+###
+POST {{url}}/store
+Content-Type: application/json
+
+//{
+//    "fechaHoraInicio":"2022-06-06T18:00:00.000Z",
+//    "fechaHoraFin":"2022-06-06T19:00:00.000Z",
+//    "cedula":"6863426",
+//    "description":"Cita de Prueba para la Cedula 6863426"
+//}
