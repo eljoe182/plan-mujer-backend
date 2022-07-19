@@ -53,17 +53,17 @@ export const show = async (req, res) => {
       {
         model: TypePayrollModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
       {
         model: MunicipalityModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
       {
         model: RegionModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
     ],
     limit: Number(size),
@@ -89,17 +89,17 @@ export const showByDocument = async (req, res) => {
       {
         model: TypePayrollModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
       {
         model: MunicipalityModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
       {
         model: RegionModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
     ],
   });
@@ -108,7 +108,7 @@ export const showByDocument = async (req, res) => {
     page: 1,
     size: 10,
     rowsCount: 1,
-    rows: [payrollModel],
+    rows: payrollModel ? [payrollModel] : [],
   });
 };
 
@@ -123,22 +123,22 @@ export const edit = async (req, res) => {
       {
         model: TypePayrollModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
       {
         model: MunicipalityModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
       {
         model: RegionModel,
         key: "id",
-        attributes: ["descripcion"],
+        attributes: ["id", "descripcion"],
       },
     ],
   });
 
-  const municipality = await MunicipalityModel.findAll({
+  const municipalityModel = await MunicipalityModel.findAll({
     attributes: ["id", "descripcion"],
     include: [
       {
@@ -150,7 +150,16 @@ export const edit = async (req, res) => {
     order: [["descripcion", "ASC"]],
   });
 
-  res.status(200).json({ payroll, municipality });
+  const regionModel = await RegionModel.findAll({
+    attributes: ["id", "descripcion"],
+    order: [["descripcion", "ASC"]],
+  });
+
+  res.status(200).json({
+    payroll,
+    municipality: municipalityModel,
+    region: regionModel,
+  });
 };
 
 export const store = async (req, res) => {
