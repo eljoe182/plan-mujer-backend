@@ -5,11 +5,11 @@ GET {{url}}?page=2&size=10
 Content-Type: application/json
 
 ###
-GET {{url}}/show/18444814
+GET {{url}}/show/Juan?page=1&size=10
 Content-Type: application/json
 
 ###
-GET {{url}}/create
+GET {{url}}/edit/5931
 Content-Type: application/json
 
 ###
