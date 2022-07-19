@@ -9,6 +9,10 @@ GET {{url}}/show/Juan?page=1&size=10
 Content-Type: application/json
 
 ###
+GET {{url}}/showByDocument/9411221
+Content-Type: application/json
+
+###
 GET {{url}}/edit/5931
 Content-Type: application/json
 

@@ -78,6 +78,40 @@ export const show = async (req, res) => {
   });
 };
 
+export const showByDocument = async (req, res) => {
+  const { query } = req.params;
+  const payrollModel = await PayrollModel.findOne({
+    where: {
+      cedula: query,
+    },
+    attributes: ["id", "cedula", "Nom_titular", "fecha_nacimiento", "edad"],
+    include: [
+      {
+        model: TypePayrollModel,
+        key: "id",
+        attributes: ["descripcion"],
+      },
+      {
+        model: MunicipalityModel,
+        key: "id",
+        attributes: ["descripcion"],
+      },
+      {
+        model: RegionModel,
+        key: "id",
+        attributes: ["descripcion"],
+      },
+    ],
+  });
+
+  res.status(200).json({
+    page: 1,
+    size: 10,
+    rowsCount: 1,
+    rows: [payrollModel],
+  });
+};
+
 export const edit = async (req, res) => {
   const { id } = req.params;
   const payroll = await PayrollModel.findOne({
